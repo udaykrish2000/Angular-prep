@@ -1,0 +1,90 @@
+Conversation Log
+similar to DSA Prep website, please prepare a angular learning from basics to intermediate
+
+I have prepared an Angular Mastery Prep Sheet (Basics to Intermediate) modeled directly after top DSA preparation platforms like Striver's SDE Sheet and NeetCode 150.
+
+Every topic is organized as a discrete challenge containing:
+
+🟢 / 🟡 / 🔴 Difficulty Tier & Concept Tags
+💡 Theory & Mental Model (Modern Angular v17–19+ standalone syntax)
+💻 Production Code Blueprint (signal, computed, input(), output(), inject(), @if/@for)
+🎯 Hands-on "DSA-style" Challenge Prompt (Objective, Inputs, Constraints)
+🛠️ Solution Walkthrough
+❓ Top Technical Interview Questions & Traps
+🚀 Access Your Prep Materials
+
+Interactive Web App Tracker:
+Open angular-prep-tracker.html (or the artifact angular_prep_sheet.html).
+
+Persistent Checkbox Tracking: Saves your completion status in localStorage.
+Filter & Search: Filter by Easy / Medium / Hard or search for concepts like Signals, Interceptors, Control Flow.
+Interactive Modal: Click "Study & Solve ➜" on any topic to inspect the mental model, code blueprint, practice challenge, and reveal the solution.
+
+Full Master Markdown Guide:
+ANGULAR_PREP_SHEET.md (or artifact ANGULAR_PREP_SHEET.md).
+
+🗺️ The 10-Module Curriculum Roadmap
+Step	Module	Difficulty	Key Topics Covered
+01	Foundations & Architecture	🟢 Easy	Standalone Bootstrap, Property/Event Binding, Built-in @if, @for (track), @switch
+02	Component Communication & Lifecycle	🟢 Easy – 🟡 Med	input() vs @Input(), output() vs @Output(), viewChild(), DestroyRef, afterNextRender
+03	Signals & Modern Reactivity	🟡 Medium	signal(), set(), update(), memoized computed(), effect(), toSignal() / toObservable()
+04	Dependency Injection & Services	🟡 Medium	@Injectable({ providedIn: 'root' }), functional inject(), Signal State Store pattern
+05	Routing & Navigation	🟡 Medium	Standalone provideRouter(), withComponentInputBinding(), functional CanActivateFn, CanDeactivateFn
+06	Angular Reactive Forms	🟡 Medium – 🔴 Hard	Strictly Typed Forms, FormBuilder, Custom Cross-Field Validators, Async Uniqueness Validators
+07	HTTP Client & RxJS Mastery	🟡 Medium – 🔴 Hard	provideHttpClient(), functional HttpInterceptorFn, flattening operators (switchMap, exhaustMap, concatMap)
+08	Directives & Content Projection	🟡 Medium	Custom Attribute Directives (host: { ... }), Single/Multi-Slot <ng-content select="...">
+09	Pipes & Data Transformation	🟢 Easy – 🟡 Med	Pure vs Impure Pipes, Memoization, Custom Formatting Pipes (timeAgo, fileSize)
+10	Performance & Production	🔴 Hard	ChangeDetectionStrategy.OnPush, ChangeDetectorRef, Memory Leak Prevention with takeUntilDestroyed(), Zoneless Angular
+⏱️ Recommended Study Rhythm (4 Weeks)
+Week 1 (Basics): Modules 1 to 3 — Focus on Standalone Components, @for / @if, and Signals (signal, computed).
+Week 2 (Core Architecture): Modules 4 to 5 — Build a Signal Store service, configure routing with input parameter binding and functional route guards.
+Week 3 (Forms & Networking): Modules 6 to 7 — Build typed forms, async validators, and handle live search with switchMap and interceptors.
+Week 4 (Production Polish): Modules 8 to 10 — Master OnPush change detection, custom pure pipes, and eliminate memory leaks with takeUntilDestroyed().
+
+TIP
+
+You can double-click angular-prep-tracker.html in your browser right now to start checking off topics and tracking your progress!
+
+Angular Prep SheetAngular Prep Sheet
+ok deploy this
+User cancelled agent execution.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular DSA Prep Sheet - Basics to Intermediate</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Custom scrollbar and animations */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--card, rgba(0,0,0,0.05)); }
+    ::-webkit-scrollbar-thumb { background: var(--card-border, rgba(120,120,120,0.3)); border-radius: 3px; }
+    .badge-easy { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+    .badge-medium { background: rgba(234, 179, 8, 0.15); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.3); }
+    .badge-hard { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    pre code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
+</head>
+<body class="bg-[var(--background,#0f172a)] text-[var(--foreground,#f8fafc)] antialiased min-h-screen p-4 md:p-8">
+  <!-- Header Section -->
+  <div class="max-w-7xl mx-auto space-y-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[var(--card-border,#334155)]">
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-rose-400 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-red-500/20">
+            A
+          </div>
+          <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Angular DSA Prep Sheet</h1>
+            <p class="text-sm text-[var(--muted-foreground,#94a3b8)]">Structured Mastery Plan: Foundations to Production-Ready Intermediate (Angular 16-19+)</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="reset-progress-btn" class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border,#475569)] hover:bg-[var(--card,#1e293b)] transition">
+          Reset Progress
+        </button>
+        <button id="toggle-all-btn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--primary,#dd0031)] text-white hover:opacity-90 transition shadow">
+          Expand All
+        </button>
