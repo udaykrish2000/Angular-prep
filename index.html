@@ -1,53 +1,3 @@
-Conversation Log
-similar to DSA Prep website, please prepare a angular learning from basics to intermediate
-
-I have prepared an Angular Mastery Prep Sheet (Basics to Intermediate) modeled directly after top DSA preparation platforms like Striver's SDE Sheet and NeetCode 150.
-
-Every topic is organized as a discrete challenge containing:
-
-🟢 / 🟡 / 🔴 Difficulty Tier & Concept Tags
-💡 Theory & Mental Model (Modern Angular v17–19+ standalone syntax)
-💻 Production Code Blueprint (signal, computed, input(), output(), inject(), @if/@for)
-🎯 Hands-on "DSA-style" Challenge Prompt (Objective, Inputs, Constraints)
-🛠️ Solution Walkthrough
-❓ Top Technical Interview Questions & Traps
-🚀 Access Your Prep Materials
-
-Interactive Web App Tracker:
-Open angular-prep-tracker.html (or the artifact angular_prep_sheet.html).
-
-Persistent Checkbox Tracking: Saves your completion status in localStorage.
-Filter & Search: Filter by Easy / Medium / Hard or search for concepts like Signals, Interceptors, Control Flow.
-Interactive Modal: Click "Study & Solve ➜" on any topic to inspect the mental model, code blueprint, practice challenge, and reveal the solution.
-
-Full Master Markdown Guide:
-ANGULAR_PREP_SHEET.md (or artifact ANGULAR_PREP_SHEET.md).
-
-🗺️ The 10-Module Curriculum Roadmap
-Step	Module	Difficulty	Key Topics Covered
-01	Foundations & Architecture	🟢 Easy	Standalone Bootstrap, Property/Event Binding, Built-in @if, @for (track), @switch
-02	Component Communication & Lifecycle	🟢 Easy – 🟡 Med	input() vs @Input(), output() vs @Output(), viewChild(), DestroyRef, afterNextRender
-03	Signals & Modern Reactivity	🟡 Medium	signal(), set(), update(), memoized computed(), effect(), toSignal() / toObservable()
-04	Dependency Injection & Services	🟡 Medium	@Injectable({ providedIn: 'root' }), functional inject(), Signal State Store pattern
-05	Routing & Navigation	🟡 Medium	Standalone provideRouter(), withComponentInputBinding(), functional CanActivateFn, CanDeactivateFn
-06	Angular Reactive Forms	🟡 Medium – 🔴 Hard	Strictly Typed Forms, FormBuilder, Custom Cross-Field Validators, Async Uniqueness Validators
-07	HTTP Client & RxJS Mastery	🟡 Medium – 🔴 Hard	provideHttpClient(), functional HttpInterceptorFn, flattening operators (switchMap, exhaustMap, concatMap)
-08	Directives & Content Projection	🟡 Medium	Custom Attribute Directives (host: { ... }), Single/Multi-Slot <ng-content select="...">
-09	Pipes & Data Transformation	🟢 Easy – 🟡 Med	Pure vs Impure Pipes, Memoization, Custom Formatting Pipes (timeAgo, fileSize)
-10	Performance & Production	🔴 Hard	ChangeDetectionStrategy.OnPush, ChangeDetectorRef, Memory Leak Prevention with takeUntilDestroyed(), Zoneless Angular
-⏱️ Recommended Study Rhythm (4 Weeks)
-Week 1 (Basics): Modules 1 to 3 — Focus on Standalone Components, @for / @if, and Signals (signal, computed).
-Week 2 (Core Architecture): Modules 4 to 5 — Build a Signal Store service, configure routing with input parameter binding and functional route guards.
-Week 3 (Forms & Networking): Modules 6 to 7 — Build typed forms, async validators, and handle live search with switchMap and interceptors.
-Week 4 (Production Polish): Modules 8 to 10 — Master OnPush change detection, custom pure pipes, and eliminate memory leaks with takeUntilDestroyed().
-
-TIP
-
-You can double-click angular-prep-tracker.html in your browser right now to start checking off topics and tracking your progress!
-
-Angular Prep SheetAngular Prep Sheet
-ok deploy this
-User cancelled agent execution.
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,6 +17,7 @@ User cancelled agent execution.
   </style>
 </head>
 <body class="bg-[var(--background,#0f172a)] text-[var(--foreground,#f8fafc)] antialiased min-h-screen p-4 md:p-8">
+
   <!-- Header Section -->
   <div class="max-w-7xl mx-auto space-y-6">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[var(--card-border,#334155)]">
@@ -81,6 +32,7 @@ User cancelled agent execution.
           </div>
         </div>
       </div>
+
       <div class="flex items-center gap-3">
         <button id="reset-progress-btn" class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border,#475569)] hover:bg-[var(--card,#1e293b)] transition">
           Reset Progress
@@ -88,3 +40,1592 @@ User cancelled agent execution.
         <button id="toggle-all-btn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--primary,#dd0031)] text-white hover:opacity-90 transition shadow">
           Expand All
         </button>
+      </div>
+    </div>
+
+    <!-- Progress Tracker Overview Card -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <!-- Total Progress -->
+      <div class="bg-[var(--card,#1e293b)] border border-[var(--card-border,#334155)] rounded-2xl p-4 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-xs uppercase tracking-wider font-semibold text-[var(--muted-foreground,#94a3b8)]">Total Completion</span>
+          <span id="progress-percent" class="text-xs font-bold text-emerald-400">0%</span>
+        </div>
+        <div class="my-3">
+          <div class="text-2xl font-black tabular-nums"><span id="solved-count">0</span><span class="text-sm text-[var(--muted-foreground,#94a3b8)] font-normal"> / <span id="total-count">25</span> Topics</span></div>
+          <div class="w-full h-2 rounded-full bg-[var(--background,#0f172a)] mt-2 overflow-hidden">
+            <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-red-500 via-rose-500 to-emerald-400 transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+        <div class="text-[11px] text-[var(--muted-foreground,#94a3b8)] flex items-center justify-between">
+          <span>Target: 1-2 topics / day</span>
+          <span>~3-4 Weeks</span>
+        </div>
+      </div>
+
+      <!-- Easy Stats -->
+      <div class="bg-[var(--card,#1e293b)] border border-[var(--card-border,#334155)] rounded-2xl p-4">
+        <div class="flex items-center justify-between text-xs font-semibold text-emerald-400">
+          <span>🟢 Easy (Foundations)</span>
+          <span id="easy-ratio">0 / 8</span>
+        </div>
+        <div class="mt-2 text-xl font-bold" id="easy-percent">0%</div>
+        <p class="text-[11px] text-[var(--muted-foreground,#94a3b8)] mt-1">Components, Bindings, Built-in Control Flow, Basic Directives</p>
+      </div>
+
+      <!-- Medium Stats -->
+      <div class="bg-[var(--card,#1e293b)] border border-[var(--card-border,#334155)] rounded-2xl p-4">
+        <div class="flex items-center justify-between text-xs font-semibold text-yellow-400">
+          <span>🟡 Medium (Core Skills)</span>
+          <span id="medium-ratio">0 / 12</span>
+        </div>
+        <div class="mt-2 text-xl font-bold" id="medium-percent">0%</div>
+        <p class="text-[11px] text-[var(--muted-foreground,#94a3b8)] mt-1">Signals, DI, RxJS Operators, Reactive Forms, Route Guards, Interceptors</p>
+      </div>
+
+      <!-- Hard Stats -->
+      <div class="bg-[var(--card,#1e293b)] border border-[var(--card-border,#334155)] rounded-2xl p-4">
+        <div class="flex items-center justify-between text-xs font-semibold text-rose-400">
+          <span>🔴 Hard (Senior/Perf)</span>
+          <span id="hard-ratio">0 / 5</span>
+        </div>
+        <div class="mt-2 text-xl font-bold" id="hard-percent">0%</div>
+        <p class="text-[11px] text-[var(--muted-foreground,#94a3b8)] mt-1">OnPush Change Detection, Race Conditions, Memory Leaks, Zoneless</p>
+      </div>
+    </div>
+
+    <!-- Filters & Search Toolbar -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-[var(--card,#1e293b)] p-3 rounded-2xl border border-[var(--card-border,#334155)]">
+      <!-- Search Input -->
+      <div class="relative flex-1">
+        <input 
+          id="search-input" 
+          type="text" 
+          placeholder="Search by topic, keyword (e.g. signals, interceptor, control flow)..."
+          class="w-full bg-[var(--background,#0f172a)] border border-[var(--border,#334155)] rounded-xl px-4 py-2 text-xs md:text-sm text-[var(--foreground,#f8fafc)] placeholder-[var(--muted-foreground,#64748b)] focus:outline-none focus:border-red-500"
+        />
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+        <button data-filter="all" class="filter-btn active px-3 py-1.5 rounded-xl text-xs font-medium bg-red-600 text-white">All</button>
+        <button data-filter="easy" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-[var(--background,#0f172a)] text-[var(--muted-foreground,#94a3b8)] hover:text-white">Easy</button>
+        <button data-filter="medium" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-[var(--background,#0f172a)] text-[var(--muted-foreground,#94a3b8)] hover:text-white">Medium</button>
+        <button data-filter="hard" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-[var(--background,#0f172a)] text-[var(--muted-foreground,#94a3b8)] hover:text-white">Hard</button>
+        <div class="h-4 w-[1px] bg-[var(--border,#475569)] mx-1"></div>
+        <button data-status="all" class="status-btn active px-3 py-1.5 rounded-xl text-xs font-medium bg-[var(--background,#0f172a)] text-[var(--foreground,#f8fafc)] border border-[var(--border,#475569)]">All Status</button>
+        <button data-status="unsolved" class="status-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-[var(--background,#0f172a)] text-[var(--muted-foreground,#94a3b8)] hover:text-white">Pending</button>
+        <button data-status="solved" class="status-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-[var(--background,#0f172a)] text-[var(--muted-foreground,#94a3b8)] hover:text-white">Completed</button>
+      </div>
+    </div>
+
+    <!-- Main Roadmap List (Modules Accordion) -->
+    <div id="modules-container" class="space-y-4">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- Quick Revision Cheat Sheet Section -->
+    <div class="mt-12 p-6 rounded-2xl bg-[var(--card,#1e293b)] border border-[var(--card-border,#334155)] space-y-4">
+      <div class="flex items-center gap-2">
+        <span class="text-lg">⚡</span>
+        <h2 class="text-lg font-bold">Quick Revision Matrix (Interview Favorite Tables)</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+        <div class="p-4 rounded-xl bg-[var(--background,#0f172a)] border border-[var(--card-border,#334155)] space-y-2">
+          <div class="font-bold text-red-400">Signals vs RxJS: When to Choose?</div>
+          <table class="w-full text-left border-collapse">
+            <tr class="border-b border-[var(--card-border,#334155)] text-[var(--muted-foreground,#94a3b8)]">
+              <th class="py-1">Feature</th><th>Signals</th><th>RxJS Observables</th>
+            </tr>
+            <tr class="border-b border-[var(--card-border,#334155)]">
+              <td class="py-1 font-semibold">Primary Use</td><td>Synchronous state & UI reactivity</td><td>Asynchronous events & streams</td>
+            </tr>
+            <tr class="border-b border-[var(--card-border,#334155)]">
+              <td class="py-1 font-semibold">Subscription</td><td>Glitch-free, automatic tracking</td><td>Requires unsubscribe/takeUntil</td>
+            </tr>
+            <tr>
+              <td class="py-1 font-semibold">Async Operations</td><td>Use with RxJS (`toSignal`)</td><td>Native (debounce, retry, switchMap)</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[var(--background,#0f172a)] border border-[var(--card-border,#334155)] space-y-2">
+          <div class="font-bold text-emerald-400">Modern vs Classic Angular Syntax</div>
+          <table class="w-full text-left border-collapse">
+            <tr class="border-b border-[var(--card-border,#334155)] text-[var(--muted-foreground,#94a3b8)]">
+              <th class="py-1">Concept</th><th>Modern (v17+)</th><th>Classic (v2-16)</th>
+            </tr>
+            <tr class="border-b border-[var(--card-border,#334155)]">
+              <td class="py-1 font-semibold">Inputs</td><td><code>name = input&lt;string&gt;()</code></td><td><code>@Input() name: string</code></td>
+            </tr>
+            <tr class="border-b border-[var(--card-border,#334155)]">
+              <td class="py-1 font-semibold">Loops</td><td><code>@for (item of items; track item.id)</code></td><td><code>*ngFor="let item of items; trackBy:..."</code></td>
+            </tr>
+            <tr>
+              <td class="py-1 font-semibold">Dependency Injection</td><td><code>private http = inject(HttpClient)</code></td><td><code>constructor(private http: HttpClient)</code></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div id="modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[var(--card,#1e293b)] border border-[var(--card-border,#334155)] rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-[var(--card-border,#334155)] flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span id="modal-difficulty" class="text-xs px-2.5 py-0.5 rounded-full font-bold"></span>
+          <h3 id="modal-title" class="text-lg font-bold"></h3>
+        </div>
+        <button id="modal-close-btn" class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-[var(--background,#0f172a)] text-[var(--muted-foreground,#94a3b8)] hover:text-white transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto space-y-6 text-sm">
+        <!-- Theory & Mental Model -->
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-red-400 mb-2">1. Theory & Mental Model</h4>
+          <div id="modal-theory" class="p-4 rounded-xl bg-[var(--background,#0f172a)] border border-[var(--card-border,#334155)] leading-relaxed text-[var(--foreground,#e2e8f0)] space-y-2"></div>
+        </div>
+
+        <!-- Code Blueprint -->
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-blue-400 mb-2">2. Production Code Blueprint (Modern Standalone)</h4>
+          <div class="relative rounded-xl overflow-hidden border border-[var(--card-border,#334155)] bg-[#090d16]">
+            <pre class="p-4 text-xs overflow-x-auto text-emerald-300 font-mono"><code id="modal-code"></code></pre>
+          </div>
+        </div>
+
+        <!-- DSA-Style Hands-on Challenge -->
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-yellow-400 mb-2">3. Hands-on Challenge Prompt (Practice Problem)</h4>
+          <div id="modal-challenge" class="p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-200 text-xs space-y-2"></div>
+        </div>
+
+        <!-- Solution Walkthrough -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400">4. Solution Walkthrough & Key Steps</h4>
+            <button id="toggle-solution-btn" class="text-xs text-purple-300 underline cursor-pointer">Show Solution Code</button>
+          </div>
+          <div id="solution-container" class="hidden relative rounded-xl overflow-hidden border border-[var(--card-border,#334155)] bg-[#090d16]">
+            <pre class="p-4 text-xs overflow-x-auto text-purple-200 font-mono"><code id="modal-solution"></code></pre>
+          </div>
+        </div>
+
+        <!-- Top Interview Questions -->
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2">5. Top Interview Traps & Questions</h4>
+          <div id="modal-interview" class="p-4 rounded-xl bg-[var(--background,#0f172a)] border border-[var(--card-border,#334155)] text-xs text-[var(--muted-foreground,#94a3b8)] space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-[var(--card-border,#334155)] flex items-center justify-between bg-[var(--background,#0f172a)]/50">
+        <label class="flex items-center gap-2 cursor-pointer text-xs font-medium">
+          <input type="checkbox" id="modal-checkbox" class="w-4 h-4 rounded text-red-600 focus:ring-red-500 accent-red-600" />
+          <span>Mark as Completed</span>
+        </label>
+        <button id="modal-done-btn" class="px-4 py-2 rounded-xl text-xs font-semibold bg-red-600 text-white hover:bg-red-700 transition">
+          Done & Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Complete Angular Prep Data (Modules 1 - 10)
+    const modulesData = [
+      {
+        id: "m1",
+        title: "Module 1: Angular Foundations & Modern Architecture",
+        desc: "Standalone components, project structure, data binding, and the new Control Flow syntax.",
+        topics: [
+          {
+            id: "t1_1",
+            title: "Standalone Components & Modern Bootstrap",
+            difficulty: "easy",
+            tags: ["Architecture", "v17+"],
+            theory: `In modern Angular (v17+), <strong>Standalone Components</strong> are the default. The cumbersome <code>NgModule</code> is deprecated for new projects.<br/><br/>
+            Applications are bootstrapped directly via <code>bootstrapApplication(AppComponent, { providers: [...] })</code> in <code>main.ts</code>. Components explicitly declare their dependencies (pipes, directives, other components) inside the <code>imports: [...]</code> array.`,
+            code: `// main.ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app.config';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, appConfig).catch((err) => console.error(err));
+
+// app.component.ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule],
+  template: \`<h1>{{ title }}</h1>\`
+})
+export class AppComponent {
+  title = 'Hello Angular 19';
+}`,
+            challenge: `<strong>Challenge #1:</strong> Create a standalone <code>UserProfileComponent</code> that imports <code>DatePipe</code> and displays a user's name, join date, and avatar without any NgModule.`,
+            solution: `@Component({
+  selector: 'app-user-profile',
+  standalone: true,
+  imports: [DatePipe],
+  template: \`
+    <div class="user-card">
+      <img [src]="avatarUrl" alt="Avatar" />
+      <h3>{{ username }}</h3>
+      <p>Member since: {{ joinedDate | date:'mediumDate' }}</p>
+    </div>
+  \`
+})
+export class UserProfileComponent {
+  username = 'alex_coder';
+  avatarUrl = 'https://i.pravatar.cc/150?u=alex';
+  joinedDate = new Date(2024, 0, 15);
+}`,
+            interview: `<strong>Q:</strong> Why did Angular introduce Standalone Components?<br/><strong>A:</strong> To eliminate NgModule boilerplate, enable better tree-shaking, simplify the mental model for newcomers, and optimize lazy loading at the component level.`
+          },
+          {
+            id: "t1_2",
+            title: "Data Binding: Interpolation, Property & Event Binding",
+            difficulty: "easy",
+            tags: ["Bindings", "Core"],
+            theory: `Angular provides 3 core one-way binding styles:<br/>
+            1. <strong>Interpolation</strong> <code>{{ value }}</code>: Renders component state into text content.<br/>
+            2. <strong>Property Binding</strong> <code>[property]="expr"</code>: Binds an expression to an element or directive DOM property.<br/>
+            3. <strong>Event Binding</strong> <code>(event)="handler($event)"</code>: Listens for user interactions like clicks, inputs, and keyups.`,
+            code: `@Component({
+  selector: 'app-counter',
+  standalone: true,
+  template: \`
+    <button [disabled]="count <= 0" (click)="decrement()">-</button>
+    <span [class.text-red-500]="count > 10">{{ count }}</span>
+    <button (click)="increment()">+</button>
+  \`
+})
+export class CounterComponent {
+  count = 0;
+  increment() { this.count++; }
+  decrement() { if (this.count > 0) this.count--; }
+}`,
+            challenge: `<strong>Challenge #2:</strong> Build an interactive font-size controller where clicking '+' increases font size by 2px, '-' decreases it, and disabled states prevent sizes below 12px or above 32px using property binding <code>[style.fontSize.px]</code>.`,
+            solution: `@Component({
+  selector: 'app-font-resizer',
+  standalone: true,
+  template: \`
+    <button [disabled]="fontSize <= 12" (click)="fontSize = fontSize - 2">-</button>
+    <span [style.fontSize.px]="fontSize">Preview Text ({{ fontSize }}px)</span>
+    <button [disabled]="fontSize >= 32" (click)="fontSize = fontSize + 2">+</button>
+  \`
+})
+export class FontResizerComponent {
+  fontSize = 16;
+}`,
+            interview: `<strong>Q:</strong> What is the difference between HTML attributes and DOM properties?<br/><strong>A:</strong> Attributes are defined by HTML and initialize DOM properties. Angular property binding binds directly to the DOM property, not the HTML attribute (e.g. <code>[disabled]</code> vs <code>disabled="true"</code>).`
+          },
+          {
+            id: "t1_3",
+            title: "Modern Built-in Control Flow (@if, @for, @switch)",
+            difficulty: "easy",
+            tags: ["Control Flow", "v17+"],
+            theory: `Angular 17 introduced declarative block syntax (<code>@if</code>, <code>@for</code>, <code>@switch</code>) replacing <code>*ngIf</code>, <code>*ngFor</code>, and <code>*ngSwitch</code>.<br/><br/>
+            Benefits: Up to 90% faster compilation, no imports needed, built-in <code>@empty</code> fallback for arrays, and mandatory <code>track</code> expressions for lightning-fast DOM diffing.`,
+            code: `@Component({
+  template: \`
+    @if (isLoggedIn) {
+      <p>Welcome back, {{ user.name }}!</p>
+    } @else {
+      <button (click)="login()">Sign In</button>
+    }
+
+    <ul>
+      @for (task of tasks; track task.id; let idx = $index, count = $count) {
+        <li>{{ idx + 1 }} / {{ count }} - {{ task.title }}</li>
+      } @empty {
+        <li>No tasks available. You're all caught up!</li>
+      }
+    </ul>
+  \`
+})`,
+            challenge: `<strong>Challenge #3:</strong> Render a task list using <code>@for</code> with <code>track item.id</code> and an <code>@empty</code> block. Include <code>@switch</code> to render a priority badge (Low = gray, Medium = yellow, High = red).`,
+            solution: `@Component({
+  template: \`
+    @for (t of tasks; track t.id) {
+      <div class="task-row">
+        <span>{{ t.title }}</span>
+        @switch (t.priority) {
+          @case ('HIGH') { <span class="badge red">High Priority</span> }
+          @case ('MEDIUM') { <span class="badge yellow">Medium</span> }
+          @default { <span class="badge gray">Low</span> }
+        }
+      </div>
+    } @empty {
+      <p>No tasks found.</p>
+    }
+  \`
+})`,
+            interview: `<strong>Q:</strong> Why is <code>track</code> mandatory in <code>@for</code>?<br/><strong>A:</strong> It allows Angular to track identity across re-renders, preventing destruction and re-creation of unchanged DOM nodes, boosting rendering performance significantly compared to unoptimized <code>*ngFor</code>.`
+          },
+          {
+            id: "t1_4",
+            title: "Two-Way Data Binding: [(ngModel)] vs model() Signal",
+            difficulty: "easy",
+            tags: ["Forms", "Signals"],
+            theory: `Two-way binding synchronizes property values in both directions (view to model, model to view) using the banana-in-a-box syntax <code>[(ngModel)]</code> or the modern <code>model()</code> signal introduced in v17.2+.`,
+            code: `// Classic Template-driven two-way binding
+import { FormsModule } from '@angular/forms';
+@Component({
+  imports: [FormsModule],
+  template: \`<input [(ngModel)]="searchQuery" /> <p>Searching: {{ searchQuery }}</p>\`
+})
+export class SearchComponent {
+  searchQuery = '';
+}
+
+// Modern Signal Model (v17.2+)
+import { Component, model } from '@angular/core';
+@Component({
+  selector: 'custom-input',
+  template: \`<input [value]="value()" (input)="value.set($any($event.target).value)" />\`
+})
+export class CustomInput {
+  value = model(''); // Creates both an input and an output automatically!
+}`,
+            challenge: `<strong>Challenge #4:</strong> Create a live currency converter component where typing in USD automatically updates EUR, and typing in EUR automatically updates USD using two-way binding.`,
+            solution: `@Component({
+  selector: 'app-fx-calc',
+  imports: [FormsModule],
+  template: \`
+    <label>USD: <input type="number" [(ngModel)]="usd" (ngModelChange)="onUsdChange($event)" /></label>
+    <label>EUR: <input type="number" [(ngModel)]="eur" (ngModelChange)="onEurChange($event)" /></label>
+  \`
+})
+export class FxCalcComponent {
+  rate = 0.92;
+  usd = 100;
+  eur = 92;
+
+  onUsdChange(val: number) { this.eur = Number((val * this.rate).toFixed(2)); }
+  onEurChange(val: number) { this.usd = Number((val / this.rate).toFixed(2)); }
+}`,
+            interview: `<strong>Q:</strong> What is the desugared syntax of <code>[(ngModel)]="name"</code>?<br/><strong>A:</strong> <code>[ngModel]="name" (ngModelChange)="name = $event"</code>. The brackets indicate property binding, parentheses indicate event binding.`
+          }
+        ]
+      },
+      {
+        id: "m2",
+        title: "Module 2: Component Communication & Lifecycle",
+        desc: "Inputs, Outputs, template references, ViewChild, and component lifecycle hooks.",
+        topics: [
+          {
+            id: "t2_1",
+            title: "Parent to Child: @Input() vs input() Signal",
+            difficulty: "easy",
+            tags: ["Communication", "Signals"],
+            theory: `Parent components pass data down to children. In modern Angular (v17.1+), <code>input()</code> replaces <code>@Input()</code> decorators with read-only Signals.<br/><br/>
+            <code>input.required&lt;T&gt;()</code> guarantees compile-time safety if the parent forgets to provide the value. Transform functions can also coerce values automatically.`,
+            code: `import { Component, input } from '@angular/core';
+
+@Component({
+  selector: 'app-user-badge',
+  standalone: true,
+  template: \`
+    <div [class.vip]="isVip()">
+      <span>{{ name() }}</span> (Score: {{ score() }})
+    </div>
+  \`
+})
+export class UserBadgeComponent {
+  // Required signal input
+  name = input.required<string>();
+  
+  // Optional input with default value
+  score = input<number>(0);
+
+  // Input with boolean transform
+  isVip = input<boolean, unknown>(false, {
+    transform: (v: unknown) => v !== false && v !== null && v !== undefined
+  });
+}`,
+            challenge: `<strong>Challenge #5:</strong> Build a reusable <code>ProgressBarComponent</code> accepting <code>value = input.required&lt;number&gt;()</code> and <code>color = input&lt;string&gt;('blue')</code> that clips values between 0 and 100.`,
+            solution: `@Component({
+  selector: 'app-progress-bar',
+  standalone: true,
+  template: \`
+    <div class="bar-container">
+      <div class="fill" [style.width.%]="clampedValue()" [style.backgroundColor]="color()"></div>
+    </div>
+  \`
+})
+export class ProgressBarComponent {
+  value = input.required<number>();
+  color = input<string>('blue');
+  clampedValue = computed(() => Math.min(100, Math.max(0, this.value())));
+}`,
+            interview: `<strong>Q:</strong> What is the main advantage of <code>input()</code> signal over <code>@Input()</code> decorator?<br/><strong>A:</strong> It integrates seamlessly with Angular's reactive graph, enables derived calculations via <code>computed()</code> without needing <code>ngOnChanges</code>, and supports required inputs with compile-time verification.`
+          },
+          {
+            id: "t2_2",
+            title: "Child to Parent: @Output() vs output()",
+            difficulty: "easy",
+            tags: ["Communication", "Events"],
+            theory: `Child components emit events up to parent components using <code>output&lt;T&gt;()</code> (or classic <code>@Output() new EventEmitter&lt;T&gt;()</code>). Parents bind with event syntax <code>(eventName)="handle($event)"</code>.`,
+            code: `import { Component, output } from '@angular/core';
+
+@Component({
+  selector: 'app-confirm-dialog',
+  template: \`
+    <button (click)="confirmed.emit(true)">Confirm</button>
+    <button (click)="confirmed.emit(false)">Cancel</button>
+  \`
+})
+export class ConfirmDialogComponent {
+  // Modern output() function
+  confirmed = output<boolean>();
+}
+
+// Parent usage:
+// <app-confirm-dialog (confirmed)="onDecision($event)" />`,
+            challenge: `<strong>Challenge #6:</strong> Create a Star Rating child component that emits a <code>ratingSelected = output&lt;number&gt;()</code> event whenever the user clicks on 1 to 5 stars.`,
+            solution: `@Component({
+  selector: 'app-star-rating',
+  standalone: true,
+  template: \`
+    @for (star of [1,2,3,4,5]; track star) {
+      <button (click)="ratingSelected.emit(star)">★</button>
+    }
+  \`
+})
+export class StarRatingComponent {
+  ratingSelected = output<number>();
+}`,
+            interview: `<strong>Q:</strong> Does <code>output()</code> return a Signal?<br/><strong>A:</strong> No. Outputs represent discrete events over time, not current state values. Modern <code>output()</code> returns an <code>OutputEmitterRef</code>, avoiding RxJS Subject overhead.`
+          },
+          {
+            id: "t2_3",
+            title: "View Queries: @ViewChild() vs viewChild()",
+            difficulty: "medium",
+            tags: ["DOM", "Signals"],
+            theory: `View queries access child components, directives, or native DOM elements (using template reference variables <code>#myRef</code>).<br/>
+            Modern <code>viewChild&lt;ElementRef&gt;('inputRef')</code> returns a Signal holding the queried reference, resolving after view initialization.`,
+            code: `import { Component, ElementRef, viewChild, afterNextRender } from '@angular/core';
+
+@Component({
+  selector: 'app-auto-focus',
+  template: \`
+    <input #searchBox type="text" placeholder="Type here..." />
+    <button (click)="clearAndFocus()">Reset</button>
+  \`
+})
+export class AutoFocusComponent {
+  searchBox = viewChild.required<ElementRef<HTMLInputElement>>('searchBox');
+
+  clearAndFocus() {
+    const input = this.searchBox().nativeElement;
+    input.value = '';
+    input.focus();
+  }
+}`,
+            challenge: `<strong>Challenge #7:</strong> Create a video player component with custom Play/Pause buttons that directly invoke the native HTML5 <code>play()</code> and <code>pause()</code> methods on the video DOM element via <code>viewChild</code>.`,
+            solution: `@Component({
+  template: \`
+    <video #vid src="sample.mp4" width="300"></video>
+    <button (click)="vidEl().nativeElement.play()">Play</button>
+    <button (click)="vidEl().nativeElement.pause()">Pause</button>
+  \`
+})
+export class VideoPlayerComponent {
+  vidEl = viewChild.required<ElementRef<HTMLVideoElement>>('vid');
+}`,
+            interview: `<strong>Q:</strong> In which lifecycle phase is a <code>@ViewChild</code> first accessible?<br/><strong>A:</strong> <code>ngAfterViewInit</code>. Querying it in <code>ngOnInit</code> returns <code>undefined</code> (unless <code>{ static: true }</code> is configured for non-dynamic elements).`
+          },
+          {
+            id: "t2_4",
+            title: "Component Lifecycle Hooks & afterNextRender",
+            difficulty: "medium",
+            tags: ["Lifecycle", "Hooks"],
+            theory: `Key Lifecycle sequence:<br/>
+            1. <strong>ngOnChanges</strong>: Triggered when <code>@Input</code> values change.<br/>
+            2. <strong>ngOnInit</strong>: Component initialized; ideal for initial HTTP fetches.<br/>
+            3. <strong>ngAfterViewInit</strong>: View & child queries resolved.<br/>
+            4. <strong>ngOnDestroy</strong>: Teardown, unsubscriptions, and timer cleanup.<br/>
+            5. <strong>afterNextRender / afterRender</strong>: Modern SSR-safe DOM execution hooks.`,
+            code: `import { Component, OnInit, OnDestroy, inject, DestroyRef } from '@angular/core';
+
+@Component({ selector: 'app-timer', template: \`<p>Active: {{ seconds }}s</p>\` })
+export class TimerComponent implements OnInit, OnDestroy {
+  seconds = 0;
+  private intervalId!: any;
+
+  ngOnInit() {
+    this.intervalId = setInterval(() => this.seconds++, 1000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalId); // Critical to prevent memory leak
+  }
+}`,
+            challenge: `<strong>Challenge #8:</strong> Refactor a timer component to avoid implementing <code>OnDestroy</code> by using the modern <code>DestroyRef.onDestroy()</code> hook with <code>inject(DestroyRef)</code>.`,
+            solution: `@Component({ selector: 'app-modern-timer', template: \`<span>{{ seconds }}</span>\` })
+export class ModernTimerComponent {
+  seconds = 0;
+  private destroyRef = inject(DestroyRef);
+
+  constructor() {
+    const timer = setInterval(() => this.seconds++, 1000);
+    this.destroyRef.onDestroy(() => clearInterval(timer));
+  }
+}`,
+            interview: `<strong>Q:</strong> Why should you rarely use <code>ngDoCheck</code>?<br/><strong>A:</strong> <code>ngDoCheck</code> executes on EVERY change detection pass (mouse movements, keypresses, timers). Heavy logic here will severely degrade frame rates and UI performance.`
+          }
+        ]
+      },
+      {
+        id: "m3",
+        title: "Module 3: Angular Signals & Modern Reactivity",
+        desc: "Deep dive into Signals, computed properties, effects, and bridging with RxJS.",
+        topics: [
+          {
+            id: "t3_1",
+            title: "Core Signals: signal(), set(), update()",
+            difficulty: "easy",
+            tags: ["Signals", "Core"],
+            theory: `A <strong>Signal</strong> is a reactive value wrapper that notifies interested consumers when its value changes. Unlike RxJS Observables, Signals are always synchronous and glitch-free.<br/><br/>
+            - <code>mySignal()</code>: Read value.<br/>
+            - <code>mySignal.set(newVal)</code>: Overwrite value.<br/>
+            - <code>mySignal.update(fn)</code>: Compute next value based on current.`,
+            code: `import { Component, signal } from '@angular/core';
+
+@Component({
+  template: \`
+    <h3>Items: {{ items().length }}</h3>
+    <button (click)="addItem()">Add</button>
+  \`
+})
+export class ItemListComponent {
+  items = signal<string[]>(['Apple', 'Banana']);
+
+  addItem() {
+    // Immutable update pattern
+    this.items.update(list => [...list, 'Orange']);
+  }
+}`,
+            challenge: `<strong>Challenge #9:</strong> Build a Todo manager using a single signal of tasks <code>signal&lt;Todo[]&gt;</code> supporting: adding a task, toggling <code>completed</code> status immutably with <code>update()</code>, and deleting a task.`,
+            solution: `interface Todo { id: number; text: string; done: boolean; }
+
+export class TodoComponent {
+  todos = signal<Todo[]>([]);
+
+  add(text: string) {
+    this.todos.update(list => [...list, { id: Date.now(), text, done: false }]);
+  }
+
+  toggle(id: number) {
+    this.todos.update(list => list.map(t => t.id === id ? { ...t, done: !t.done } : t));
+  }
+
+  remove(id: number) {
+    this.todos.update(list => list.filter(t => t.id !== id));
+  }
+}`,
+            interview: `<strong>Q:</strong> What is "glitch-free" execution in Signals?<br/><strong>A:</strong> If two derived signals depend on the same parent signal, both will update coherently without intermediate inconsistent states (the diamond dependency problem solved by pull-based reactive graphs).`
+          },
+          {
+            id: "t3_2",
+            title: "Derived State with computed()",
+            difficulty: "medium",
+            tags: ["Signals", "Memoization"],
+            theory: `<code>computed(() => expr)</code> creates a memoized, read-only Signal derived from one or more dependency signals.<br/><br/>
+            Key rules: It is lazily evaluated (only calculates when read) and dynamically tracks dependencies (if a branch is skipped by an if-statement, that dependency is automatically untracked).`,
+            code: `export class CartComponent {
+  items = signal<{ price: number; qty: number }[]>([
+    { price: 20, qty: 2 },
+    { price: 50, qty: 1 }
+  ]);
+  discount = signal(0.1); // 10%
+
+  subtotal = computed(() => 
+    this.items().reduce((sum, item) => sum + (item.price * item.qty), 0)
+  );
+
+  total = computed(() => this.subtotal() * (1 - this.discount()));
+}`,
+            challenge: `<strong>Challenge #10:</strong> Create an e-commerce filter with <code>products = signal(...)</code>, <code>searchQuery = signal('')</code>, and <code>selectedCategory = signal('ALL')</code>. Create a <code>filteredProducts = computed(...)</code> that efficiently filters whenever query or category changes.`,
+            solution: `export class FilterComponent {
+  products = signal([
+    { name: 'Laptop', cat: 'Tech' },
+    { name: 'Shirt', cat: 'Apparel' },
+    { name: 'Mouse', cat: 'Tech' }
+  ]);
+  query = signal('');
+  category = signal('ALL');
+
+  filteredProducts = computed(() => {
+    const q = this.query().toLowerCase();
+    const c = this.category();
+    return this.products().filter(p => 
+      (c === 'ALL' || p.cat === c) && p.name.toLowerCase().includes(q)
+    );
+  });
+}`,
+            interview: `<strong>Q:</strong> Can you mutate state inside a <code>computed()</code> callback?<br/><strong>A:</strong> Absolutely NOT. <code>computed()</code> functions must be pure side-effect-free calculations. Setting another signal inside <code>computed()</code> throws a runtime error.`
+          },
+          {
+            id: "t3_3",
+            title: "Side Effects with effect() & Cleanup",
+            difficulty: "medium",
+            tags: ["Signals", "Side Effects"],
+            theory: `<code>effect(() => { ... })</code> runs an operation whenever any signal it reads changes. Common uses: Logging, syncing to localStorage, manual canvas/chart redraws.<br/><br/>
+            Must be instantiated in an <em>injection context</em> (e.g., constructor). Provides an <code>onCleanup</code> callback to abort pending timers or requests.`,
+            code: `export class ThemeComponent {
+  theme = signal<'light' | 'dark'>('dark');
+
+  constructor() {
+    effect((onCleanup) => {
+      const current = this.theme();
+      localStorage.setItem('user_theme', current);
+      document.body.className = current;
+
+      onCleanup(() => {
+        console.log('Cleaning up previous effect run...');
+      });
+    });
+  }
+}`,
+            challenge: `<strong>Challenge #11:</strong> Build an auto-saving note editor using <code>effect()</code> that debounces writing the note content signal to <code>localStorage</code> by 500ms and cleans up the timer on quick keystrokes.`,
+            solution: `export class NoteComponent {
+  content = signal('');
+
+  constructor() {
+    effect((onCleanup) => {
+      const text = this.content();
+      const timer = setTimeout(() => {
+        localStorage.setItem('draft_note', text);
+      }, 500);
+
+      onCleanup(() => clearTimeout(timer));
+    });
+  }
+}`,
+            interview: `<strong>Q:</strong> Why shouldn't you set signals inside an <code>effect()</code>?<br/><strong>A:</strong> Setting signals inside an effect risks infinite cycles and breaks unidirectional data flow. By default, Angular disallows it unless <code>{ allowSignalWrites: true }</code> is explicitly passed.`
+          },
+          {
+            id: "t3_4",
+            title: "Signals vs RxJS: Bridging with toSignal & toObservable",
+            difficulty: "medium",
+            tags: ["RxJS", "Interop"],
+            theory: `Angular provides the <code>@angular/core/rxjs-interop</code> package to bridge between Signals and RxJS Observables:<br/>
+            - <code>toSignal(obs$)</code>: Converts an Observable stream to a Signal (great for template rendering).<br/>
+            - <code>toObservable(sig)</code>: Converts a Signal into an Observable stream (great for applying RxJS operators like <code>debounceTime</code> or <code>switchMap</code>).`,
+            code: `import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+
+export class SearchService {
+  searchTerm = signal('');
+  
+  // Convert signal to stream -> apply operators -> convert back to signal!
+  results = toSignal(
+    toObservable(this.searchTerm).pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => this.http.get<string[]>('/api/search?q=' + term))
+    ),
+    { initialValue: [] }
+  );
+}`,
+            challenge: `<strong>Challenge #12:</strong> Convert an RxJS interval stream <code>interval(1000)</code> into a Signal with an initial value of 0 using <code>toSignal()</code> and display it in the template without the <code>async</code> pipe.`,
+            solution: `import { toSignal } from '@angular/core/rxjs-interop';
+import { interval } from 'rxjs';
+
+@Component({
+  template: \`<p>Seconds: {{ seconds() }}</p>\`
+})
+export class TickerComponent {
+  seconds = toSignal(interval(1000), { initialValue: 0 });
+}`,
+            interview: `<strong>Q:</strong> Do Signals replace RxJS entirely?<br/><strong>A:</strong> No. Signals handle synchronous state, derived data, and template rendering. RxJS remains the gold standard for asynchronous pipelines, WebSocket streams, debouncing, and complex cancellation logic.`
+          }
+        ]
+      },
+      {
+        id: "m4",
+        title: "Module 4: Dependency Injection & Services",
+        desc: "Hierarchical injector, inject() function, providedIn, and singleton services.",
+        topics: [
+          {
+            id: "t4_1",
+            title: "Dependency Injection & providedIn: 'root'",
+            difficulty: "medium",
+            tags: ["DI", "Architecture"],
+            theory: `Angular's DI system is hierarchical. When a service is decorated with <code>@Injectable({ providedIn: 'root' })</code>, Angular creates a single application-wide singleton that is tree-shakable.<br/><br/>
+            If provided in a Component's <code>providers: [MyService]</code>, a new instance is created for that component and its children.`,
+            code: `@Injectable({
+  providedIn: 'root'
+})
+export class LoggerService {
+  log(msg: string) { console.log('[APP]', msg); }
+}`,
+            challenge: `<strong>Challenge #13:</strong> Create an isolated <code>CartService</code> provided at the component level of <code>CheckoutComponent</code> so that each checkout tab maintains its own independent state.`,
+            solution: `@Injectable()
+export class CartService {
+  items = signal<string[]>([]);
+}
+
+@Component({
+  selector: 'app-checkout',
+  standalone: true,
+  providers: [CartService], // Scoped instance!
+  template: \`...\`
+})
+export class CheckoutComponent {
+  cart = inject(CartService);
+}`,
+            interview: `<strong>Q:</strong> What is tree-shaking with <code>providedIn: 'root'</code>?<br/><strong>A:</strong> If no component or service ever imports or injects this service, the bundler removes it completely from the final production bundle.`
+          },
+          {
+            id: "t4_2",
+            title: "Modern inject() Function vs Constructor Injection",
+            difficulty: "easy",
+            tags: ["DI", "v14+"],
+            theory: `The <code>inject()</code> function replaces constructor parameter injection. It allows cleaner code, simplifies inheritance (no need to call <code>super(http, router, fb)</code>), and enables composable helper functions.`,
+            code: `// Classic constructor injection:
+export class OldComponent {
+  constructor(private http: HttpClient, private router: Router) {}
+}
+
+// Modern functional injection:
+export class ModernComponent {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+}`,
+            challenge: `<strong>Challenge #14:</strong> Write a custom reusable helper function <code>injectCurrentUserId()</code> that injects <code>AuthService</code> and returns the current user ID signal.`,
+            solution: `export function injectCurrentUserId() {
+  const auth = inject(AuthService);
+  return computed(() => auth.currentUser()?.id ?? null);
+}
+
+// In any component:
+export class ProfileComponent {
+  userId = injectCurrentUserId();
+}`,
+            interview: `<strong>Q:</strong> Where can <code>inject()</code> be called?<br/><strong>A:</strong> Only during an injection context: property initializers, constructors, factory functions, and functional route guards/resolvers.`
+          },
+          {
+            id: "t4_3",
+            title: "Reactive State Management with Services & Signals",
+            difficulty: "medium",
+            tags: ["State", "Signals"],
+            theory: `Before third-party libraries like NgRx, simple-to-medium apps can implement clean reactive state stores directly inside an Injectable Service using Signals and read-only exposures.`,
+            code: `@Injectable({ providedIn: 'root' })
+export class NotificationStore {
+  // Private mutable state
+  private _toasts = signal<{ id: number; message: string }[]>([]);
+
+  // Public read-only exposure
+  readonly toasts = this._toasts.asReadonly();
+
+  add(message: string) {
+    const id = Date.now();
+    this._toasts.update(list => [...list, { id, message }]);
+    setTimeout(() => this.remove(id), 3000);
+  }
+
+  remove(id: number) {
+    this._toasts.update(list => list.filter(t => t.id !== id));
+  }
+}`,
+            challenge: `<strong>Challenge #15:</strong> Build an <code>AuthStore</code> service holding <code>user = signal&lt;User | null&gt;(null)</code> with methods for <code>login(credentials)</code>, <code>logout()</code>, and a computed <code>isAuthenticated = computed(() => !!this.user())</code>.`,
+            solution: `@Injectable({ providedIn: 'root' })
+export class AuthStore {
+  private _user = signal<{ name: string; token: string } | null>(null);
+  readonly user = this._user.asReadonly();
+  readonly isAuthenticated = computed(() => this._user() !== null);
+
+  login(name: string, token: string) {
+    this._user.set({ name, token });
+  }
+
+  logout() {
+    this._user.set(null);
+  }
+}`,
+            interview: `<strong>Q:</strong> Why expose state as <code>asReadonly()</code>?<br/><strong>A:</strong> To enforce unidirectional data flow. External components cannot directly call <code>.set()</code> on the store; they must invoke explicit action methods.`
+          }
+        ]
+      },
+      {
+        id: "m5",
+        title: "Module 5: Routing & SPA Architecture",
+        desc: "Standalone routing, parameter binding, lazy loading, and functional route guards.",
+        topics: [
+          {
+            id: "t5_1",
+            title: "Standalone Routes & withComponentInputBinding",
+            difficulty: "medium",
+            tags: ["Routing", "v16+"],
+            theory: `In modern Angular, routes are defined as an array of <code>Route</code> objects. With <code>withComponentInputBinding()</code>, route params (<code>:id</code>) and query params are bound directly to component <code>input()</code> signals!`,
+            code: `// app.config.ts
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes, withComponentInputBinding())
+  ]
+};
+
+// routes.ts
+export const routes: Routes = [
+  { path: 'user/:id', loadComponent: () => import('./user.component').then(m => m.UserComponent) }
+];
+
+// user.component.ts
+export class UserComponent {
+  // Automatically bound from :id in URL!
+  id = input.required<string>();
+}`,
+            challenge: `<strong>Challenge #16:</strong> Configure a product details route where the URL <code>/products/:productId?ref=promo</code> binds <code>productId</code> and <code>ref</code> directly into the component's inputs.`,
+            solution: `@Component({
+  template: \`<h3>Product: {{ productId() }} (Referred by: {{ ref() }})</h3>\`
+})
+export class ProductDetailComponent {
+  productId = input.required<string>();
+  ref = input<string>('organic');
+}`,
+            interview: `<strong>Q:</strong> What does <code>withComponentInputBinding()</code> eliminate?<br/><strong>A:</strong> It eliminates boilerplate code injecting <code>ActivatedRoute</code> and subscribing to <code>route.paramMap</code> or <code>route.queryParamMap</code>.`
+          },
+          {
+            id: "t5_2",
+            title: "Functional Route Guards (canActivateFn)",
+            difficulty: "medium",
+            tags: ["Security", "Routing"],
+            theory: `Class-based guards (<code>CanActivate</code>) are deprecated. Modern Angular uses simple pure functions matching the <code>CanActivateFn</code> signature. You can use <code>inject()</code> inside the guard function.`,
+            code: `export const authGuard: CanActivateFn = (route, state) => {
+  const authStore = inject(AuthStore);
+  const router = inject(Router);
+
+  if (authStore.isAuthenticated()) {
+    return true;
+  }
+  return router.parseUrl('/login');
+};
+
+// In routes:
+{ path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] }`,
+            challenge: `<strong>Challenge #17:</strong> Create a <code>canDeactivateFn</code> guard that prompts the user with <code>confirm('You have unsaved changes. Exit?')</code> if a form component has unsaved changes.`,
+            solution: `export interface CanComponentDeactivate {
+  hasUnsavedChanges(): boolean;
+}
+
+export const unsavedChangesGuard: CanDeactivateFn<CanComponentDeactivate> = (component) => {
+  if (component.hasUnsavedChanges && component.hasUnsavedChanges()) {
+    return confirm('You have unsaved changes. Do you really want to leave?');
+  }
+  return true;
+};`,
+            interview: `<strong>Q:</strong> What can a modern route guard return?<br/><strong>A:</strong> A boolean, a <code>UrlTree</code> (to redirect immediately), a Promise of either, or an Observable of either.`
+          }
+        ]
+      },
+      {
+        id: "m6",
+        title: "Module 6: Angular Reactive Forms",
+        desc: "FormGroup, FormControl, FormBuilder, typed forms, and custom validators.",
+        topics: [
+          {
+            id: "t6_1",
+            title: "Typed Reactive Forms & FormBuilder",
+            difficulty: "medium",
+            tags: ["Forms", "TypeScript"],
+            theory: `Reactive Forms provide a model-driven approach to handling form inputs. Since Angular 14+, forms are strictly typed, ensuring type-safety when accessing <code>form.value</code>.`,
+            code: `import { Component, inject } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
+@Component({
+  standalone: true,
+  imports: [ReactiveFormsModule],
+  template: \`
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <input formControlName="email" type="email" />
+      @if (userForm.controls.email.invalid && userForm.controls.email.touched) {
+        <small class="error">Valid email required</small>
+      }
+      <button [disabled]="userForm.invalid">Submit</button>
+    </form>
+  \`
+})
+export class UserFormComponent {
+  private fb = inject(NonNullableFormBuilder);
+
+  userForm = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    age: [18, [Validators.required, Validators.min(13)]]
+  });
+
+  onSubmit() {
+    console.log(this.userForm.getRawValue()); // Strictly typed!
+  }
+}`,
+            challenge: `<strong>Challenge #18:</strong> Build a registration form with fields: <code>username</code>, <code>password</code>, and <code>confirmPassword</code>. Disable the submit button until the form is completely valid and touched.`,
+            solution: `export class RegisterComponent {
+  private fb = inject(NonNullableFormBuilder);
+  form = this.fb.group({
+    username: ['', Validators.required],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', Validators.required]
+  });
+}`,
+            interview: `<strong>Q:</strong> What is the difference between <code>form.value</code> and <code>form.getRawValue()</code>?<br/><strong>A:</strong> <code>form.value</code> excludes any form controls that are currently disabled. <code>form.getRawValue()</code> includes all controls regardless of their disabled state.`
+          },
+          {
+            id: "t6_2",
+            title: "Custom Synchronous & Asynchronous Validators",
+            difficulty: "hard",
+            tags: ["Forms", "Validation"],
+            theory: `A custom validator is a function that receives an <code>AbstractControl</code> and returns <code>ValidationErrors | null</code>.<br/><br/>
+            Async validators return an <code>Observable&lt;ValidationErrors | null&gt;</code> (ideal for checking username availability via HTTP with a debounce).`,
+            code: `// Cross-field synchronous password matcher validator
+export function passwordMatchValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const password = control.get('password')?.value;
+    const confirm = control.get('confirmPassword')?.value;
+    return password === confirm ? null : { passwordMismatch: true };
+  };
+}
+
+// Async username uniqueness validator
+export function uniqueUsernameValidator(api: UserService): AsyncValidatorFn {
+  return (control: AbstractControl) => {
+    return timer(400).pipe(
+      switchMap(() => api.checkAvailable(control.value)),
+      map(available => (available ? null : { usernameTaken: true })),
+      catchError(() => of(null))
+    );
+  };
+}`,
+            challenge: `<strong>Challenge #19:</strong> Implement a custom cross-field validator <code>dateRangeValidator</code> on a FormGroup ensuring that <code>endDate</code> is strictly greater than <code>startDate</code>.`,
+            solution: `export const dateRangeValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+  const start = new Date(group.get('startDate')?.value);
+  const end = new Date(group.get('endDate')?.value);
+  if (start && end && end <= start) {
+    return { invalidRange: 'End date must be after start date' };
+  }
+  return null;
+};`,
+            interview: `<strong>Q:</strong> Why do async validators run only after all sync validators pass?<br/><strong>A:</strong> To save network calls and backend computation. If basic sync validation (like length or regex) fails, there is no reason to ping the server.`
+          }
+        ]
+      },
+      {
+        id: "m7",
+        title: "Module 7: HTTP Client & RxJS Asynchronous Streams",
+        desc: "HttpClient, functional interceptors, and essential RxJS operators for network calls.",
+        topics: [
+          {
+            id: "t7_1",
+            title: "Functional HTTP Interceptors (withInterceptors)",
+            difficulty: "medium",
+            tags: ["HTTP", "Security"],
+            theory: `In modern Angular, HTTP interceptors are written as functional <code>HttpInterceptorFn</code> expressions rather than classes implementing <code>HttpInterceptor</code>.<br/><br/>
+            Registered via <code>provideHttpClient(withInterceptors([authInterceptor, errorInterceptor]))</code>.`,
+            code: `export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authStore = inject(AuthStore);
+  const token = authStore.user()?.token;
+
+  if (token) {
+    req = req.clone({
+      setHeaders: { Authorization: \`Bearer \${token}\` }
+    });
+  }
+  return next(req);
+};`,
+            challenge: `<strong>Challenge #20:</strong> Write a functional error-handling interceptor that catches 401 Unauthorized errors and redirects the user to <code>/login</code> while showing an alert.`,
+            solution: `export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const router = inject(Router);
+  return next(req).pipe(
+    catchError((err: HttpErrorResponse) => {
+      if (err.status === 401) {
+        router.navigate(['/login']);
+      }
+      return throwError(() => err);
+    })
+  );
+};`,
+            interview: `<strong>Q:</strong> Why is <code>req.clone()</code> mandatory inside interceptors?<br/><strong>A:</strong> <code>HttpRequest</code> objects are immutable in Angular to ensure middleware predictability and retry safety.`
+          },
+          {
+            id: "t7_2",
+            title: "Essential RxJS Operators (switchMap, debounceTime, catchError)",
+            difficulty: "hard",
+            tags: ["RxJS", "Concurrency"],
+            theory: `The four critical flattening operators solve race conditions:<br/>
+            - <strong>switchMap</strong>: Cancels previous request when a new one arrives (ideal for autocomplete/search).<br/>
+            - <strong>mergeMap</strong>: Runs all concurrently.<br/>
+            - <strong>concatMap</strong>: Queues sequentially in order.<br/>
+            - <strong>exhaustMap</strong>: Ignores new emissions while current is pending (ideal for login/payment buttons).`,
+            code: `export class LiveSearchComponent {
+  private searchSubject = new Subject<string>();
+
+  results$ = this.searchSubject.pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap(term => this.http.get<string[]>(\`/api/items?q=\${term}\`)),
+    catchError(err => {
+      console.error(err);
+      return of([]); // Graceful fallback
+    })
+  );
+
+  onSearch(term: string) {
+    this.searchSubject.next(term);
+  }
+}`,
+            challenge: `<strong>Challenge #21:</strong> Prevent double-submission of an order button by building a payment submission stream using <code>exhaustMap</code> so repeated rapid clicks do not trigger duplicate orders.`,
+            solution: `export class CheckoutComponent {
+  private payClick$ = new Subject<OrderPayload>();
+
+  orderStatus$ = this.payClick$.pipe(
+    exhaustMap(payload => this.http.post('/api/charge', payload))
+  );
+
+  onPay(data: OrderPayload) {
+    this.payClick$.next(data);
+  }
+}`,
+            interview: `<strong>Q:</strong> What happens if an error is not handled inside <code>catchError</code> in an autocomplete stream?<br/><strong>A:</strong> The entire Observable stream terminates permanently! Any subsequent typing in the search box will never emit again.`
+          }
+        ]
+      },
+      {
+        id: "m8",
+        title: "Module 8: Directives & Content Projection",
+        desc: "Custom attribute/structural directives and single/multi-slot content projection.",
+        topics: [
+          {
+            id: "t8_1",
+            title: "Custom Attribute Directives with Host Listeners",
+            difficulty: "medium",
+            tags: ["Directives", "DOM"],
+            theory: `Attribute directives change the appearance or behavior of DOM elements or components. Modern directives use the <code>host: { ... }</code> metadata or <code>@HostListener</code>.`,
+            code: `@Directive({
+  selector: '[appHighlight]',
+  standalone: true,
+  host: {
+    '(mouseenter)': 'onEnter()',
+    '(mouseleave)': 'onLeave()',
+    '[style.backgroundColor]': 'bgColor'
+  }
+})
+export class HighlightDirective {
+  color = input<string>('yellow');
+  bgColor = '';
+
+  onEnter() { this.bgColor = this.color(); }
+  onLeave() { this.bgColor = ''; }
+}`,
+            challenge: `<strong>Challenge #22:</strong> Create an <code>[appAutoScrollBottom]</code> directive that automatically scrolls a chat container to the bottom whenever new messages arrive using <code>ElementRef</code>.`,
+            solution: `@Directive({ selector: '[appAutoScrollBottom]', standalone: true })
+export class AutoScrollBottomDirective implements AfterViewChecked {
+  private el = inject(ElementRef);
+  ngAfterViewChecked() {
+    this.el.nativeElement.scrollTop = this.el.nativeElement.scrollHeight;
+  }
+}`,
+            interview: `<strong>Q:</strong> What is preferred in modern Angular: <code>host: { ... }</code> property in decorator or <code>@HostListener</code>?<br/><strong>A:</strong> The <code>host: { ... }</code> metadata property is now officially recommended by the Angular team because it produces less boilerplate and better bundle optimizations.`
+          },
+          {
+            id: "t8_2",
+            title: "Content Projection with <ng-content>",
+            difficulty: "easy",
+            tags: ["Components", "Slots"],
+            theory: `Content projection allows parent components to insert HTML markup into designated slots inside child components using <code>&lt;ng-content select="..."&gt;</code>.`,
+            code: `@Component({
+  selector: 'app-card',
+  standalone: true,
+  template: \`
+    <div class="card">
+      <header class="card-header">
+        <ng-content select="[card-title]"></ng-content>
+      </header>
+      <main class="card-body">
+        <ng-content></ng-content> <!-- Default fallback slot -->
+      </main>
+      <footer class="card-footer">
+        <ng-content select="[card-actions]"></ng-content>
+      </footer>
+    </div>
+  \`
+})
+export class CardComponent {}`,
+            challenge: `<strong>Challenge #23:</strong> Design a reusable <code>ModalComponent</code> that projects a custom header, body, and footer with an <code>@if (isOpen())</code> condition.`,
+            solution: `@Component({
+  selector: 'app-modal',
+  standalone: true,
+  template: \`
+    @if (isOpen()) {
+      <div class="backdrop">
+        <div class="modal">
+          <ng-content select="modal-header" />
+          <ng-content />
+          <ng-content select="modal-actions" />
+        </div>
+      </div>
+    }
+  \`
+})
+export class ModalComponent {
+  isOpen = input<boolean>(false);
+}`,
+            interview: `<strong>Q:</strong> Does <code>&lt;ng-content&gt;</code> create a new component instance?<br/><strong>A:</strong> No. Projected nodes are created in the context of the parent component, not the child projecting them. Lifecycle hooks run in the parent.`
+          }
+        ]
+      },
+      {
+        id: "m9",
+        title: "Module 9: Pipes & Data Transformation",
+        desc: "Built-in pipes, custom pure pipes, memoization, and why impure pipes should be avoided.",
+        topics: [
+          {
+            id: "t9_1",
+            title: "Custom Pure Pipes vs Impure Pipes",
+            difficulty: "easy",
+            tags: ["Pipes", "Performance"],
+            theory: `A <strong>Pure Pipe</strong> executes only when its input primitive value or object reference changes. It memoizes previous outputs, making it very performant.<br/><br/>
+            An <strong>Impure Pipe</strong> executes on EVERY change detection cycle, which can severely slow down apps if used carelessly.`,
+            code: `@Pipe({
+  name: 'timeAgo',
+  standalone: true,
+  pure: true // Default: only runs when timestamp changes
+})
+export class TimeAgoPipe implements PipeTransform {
+  transform(timestamp: number | Date): string {
+    const diff = Math.floor((Date.now() - new Date(timestamp).getTime()) / 1000);
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return \`\${Math.floor(diff / 60)}m ago\`;
+    return \`\${Math.floor(diff / 3600)}h ago\`;
+  }
+}`,
+            challenge: `<strong>Challenge #24:</strong> Write a pure <code>fileSize</code> pipe that converts raw bytes into human readable strings (e.g. <code>1024 -> "1 KB"</code>, <code>1048576 -> "1 MB"</code>).`,
+            solution: `@Pipe({ name: 'fileSize', standalone: true, pure: true })
+export class FileSizePipe implements PipeTransform {
+  transform(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+}`,
+            interview: `<strong>Q:</strong> Why should you use a Pure Pipe instead of calling a component method in the template (e.g. <code>{{ calculateTotal() }}</code>)?<br/><strong>A:</strong> Methods in templates execute on every single change detection cycle. Pure pipes cache their return values and run only when their parameters change.`
+          }
+        ]
+      },
+      {
+        id: "m10",
+        title: "Module 10: Performance, Change Detection & Production",
+        desc: "ChangeDetectionStrategy.OnPush, Zone.js, memory leak prevention, and zoneless Angular.",
+        topics: [
+          {
+            id: "t10_1",
+            title: "ChangeDetectionStrategy.OnPush & ChangeDetectorRef",
+            difficulty: "hard",
+            tags: ["Performance", "Senior"],
+            theory: `By default, Angular checks every component in the tree from top to bottom on any event.<br/><br/>
+            With <code>changeDetection: ChangeDetectionStrategy.OnPush</code>, Angular skips the component unless:<br/>
+            1. An <code>@Input()</code> reference changes.<br/>
+            2. An event handler inside the component fires.<br/>
+            3. A Signal read in the template updates.<br/>
+            4. <code>async</code> pipe emits a new value.<br/>
+            5. Manually requested via <code>cdr.markForCheck()</code>.`,
+            code: `@Component({
+  selector: 'app-fast-row',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: \`<span>{{ data().name }}</span>\`
+})
+export class FastRowComponent {
+  data = input.required<{ name: string }>();
+}`,
+            challenge: `<strong>Challenge #25:</strong> Refactor a heavy table component to <code>OnPush</code>. Demonstrate updating an item by creating a new array reference rather than mutating in place to trigger change detection.`,
+            solution: `export class FastTableComponent {
+  items = signal<Item[]>([]);
+
+  // Correct OnPush pattern (immutability):
+  updateItem(index: number, newName: string) {
+    this.items.update(list => 
+      list.map((item, i) => i === index ? { ...item, name: newName } : item)
+    );
+  }
+}`,
+            interview: `<strong>Q:</strong> What is the difference between <code>markForCheck()</code> and <code>detectChanges()</code>?<br/><strong>A:</strong> <code>markForCheck()</code> marks ancestors as dirty so they are checked in the next scheduled cycle. <code>detectChanges()</code> immediately runs change detection down that specific component subtree synchronously.`
+          },
+          {
+            id: "t10_2",
+            title: "Memory Leak Prevention: takeUntilDestroyed & DestroyRef",
+            difficulty: "hard",
+            tags: ["RxJS", "Memory"],
+            theory: `Unsubscribing from long-lived RxJS subscriptions is the #1 defense against memory leaks.<br/><br/>
+            Modern Angular provides <code>takeUntilDestroyed()</code> from <code>@angular/core/rxjs-interop</code>, which automatically cancels the stream when the component is destroyed.`,
+            code: `import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { interval } from 'rxjs';
+
+@Component({ ... })
+export class SafeStreamComponent {
+  constructor() {
+    // Automatically completes subscription upon component destruction!
+    interval(1000).pipe(
+      takeUntilDestroyed()
+    ).subscribe(val => console.log('Tick:', val));
+  }
+}`,
+            challenge: `<strong>Challenge #26:</strong> Use <code>takeUntilDestroyed(this.destroyRef)</code> inside a custom method called after the constructor to prevent a leaking WebSocket listener.`,
+            solution: `export class SocketComponent {
+  private destroyRef = inject(DestroyRef);
+
+  startListening(socket$: Observable<any>) {
+    socket$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(data => this.handleData(data));
+  }
+}`,
+            interview: `<strong>Q:</strong> When can <code>takeUntilDestroyed()</code> be called without arguments?<br/><strong>A:</strong> Only within an injection context (constructor or field initializers). Outside of that context, you must pass <code>takeUntilDestroyed(destroyRef)</code> explicitly.`
+          }
+        ]
+      }
+    ];
+
+    // LocalStorage State Management
+    const STORAGE_KEY = 'angular_dsa_prep_progress';
+    let userProgress = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+    function saveProgress() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+      updateStats();
+    }
+
+    // Calculate Statistics
+    function updateStats() {
+      let total = 0;
+      let solved = 0;
+      let easyTotal = 0, easySolved = 0;
+      let medTotal = 0, medSolved = 0;
+      let hardTotal = 0, hardSolved = 0;
+
+      modulesData.forEach(m => {
+        m.topics.forEach(t => {
+          total++;
+          const isDone = !!userProgress[t.id];
+          if (isDone) solved++;
+
+          if (t.difficulty === 'easy') {
+            easyTotal++;
+            if (isDone) easySolved++;
+          } else if (t.difficulty === 'medium') {
+            medTotal++;
+            if (isDone) medSolved++;
+          } else if (t.difficulty === 'hard') {
+            hardTotal++;
+            if (isDone) hardSolved++;
+          }
+        });
+      });
+
+      const percent = total > 0 ? Math.round((solved / total) * 100) : 0;
+      document.getElementById('solved-count').textContent = solved;
+      document.getElementById('total-count').textContent = total;
+      document.getElementById('progress-percent').textContent = percent + '%';
+      document.getElementById('progress-bar-fill').style.width = percent + '%';
+
+      document.getElementById('easy-ratio').textContent = `${easySolved} / ${easyTotal}`;
+      document.getElementById('easy-percent').textContent = `${easyTotal > 0 ? Math.round((easySolved/easyTotal)*100) : 0}%`;
+
+      document.getElementById('medium-ratio').textContent = `${medSolved} / ${medTotal}`;
+      document.getElementById('medium-percent').textContent = `${medTotal > 0 ? Math.round((medSolved/medTotal)*100) : 0}%`;
+
+      document.getElementById('hard-ratio').textContent = `${hardSolved} / ${hardTotal}`;
+      document.getElementById('hard-percent').textContent = `${hardTotal > 0 ? Math.round((hardSolved/hardTotal)*100) : 0}%`;
+    }
+
+    // Render Modules & Topics
+    const container = document.getElementById('modules-container');
+    let currentFilter = 'all';
+    let currentStatus = 'all';
+    let currentSearch = '';
+    let allExpanded = false;
+
+    function render() {
+      container.innerHTML = '';
+
+      modulesData.forEach((mod, modIdx) => {
+        // Filter topics
+        const visibleTopics = mod.topics.filter(t => {
+          const matchDiff = currentFilter === 'all' || t.difficulty === currentFilter;
+          const isDone = !!userProgress[t.id];
+          const matchStatus = currentStatus === 'all' || (currentStatus === 'solved' ? isDone : !isDone);
+          const matchSearch = currentSearch === '' || 
+            t.title.toLowerCase().includes(currentSearch) || 
+            t.tags.some(tag => tag.toLowerCase().includes(currentSearch)) ||
+            mod.title.toLowerCase().includes(currentSearch);
+          return matchDiff && matchStatus && matchSearch;
+        });
+
+        if (visibleTopics.length === 0 && (currentFilter !== 'all' || currentStatus !== 'all' || currentSearch !== '')) {
+          return;
+        }
+
+        const modCard = document.createElement('div');
+        modCard.className = 'bg-[var(--card,#1e293b)] border border-[var(--card-border,#334155)] rounded-2xl overflow-hidden transition';
+
+        // Count module completion
+        const modDoneCount = mod.topics.filter(t => !!userProgress[t.id]).length;
+        const modPercent = Math.round((modDoneCount / mod.topics.length) * 100);
+
+        modCard.innerHTML = `
+          <div class="module-header p-4 cursor-pointer flex items-center justify-between hover:bg-[var(--background,#0f172a)]/40 transition select-none">
+            <div class="flex items-center gap-3">
+              <span class="module-arrow text-xs text-[var(--muted-foreground,#94a3b8)] transition-transform duration-200">▶</span>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold text-sm md:text-base">${mod.title}</h3>
+                  <span class="text-[11px] px-2 py-0.5 rounded-full bg-[var(--background,#0f172a)] border border-[var(--card-border,#334155)] text-[var(--muted-foreground,#94a3b8)]">
+                    ${modDoneCount}/${mod.topics.length}
+                  </span>
+                </div>
+                <p class="text-xs text-[var(--muted-foreground,#94a3b8)] mt-0.5">${mod.desc}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-semibold tabular-nums text-emerald-400">${modPercent}%</span>
+            </div>
+          </div>
+          <div class="module-body divide-y divide-[var(--card-border,#334155)] border-t border-[var(--card-border,#334155)] ${allExpanded ? '' : 'hidden'}">
+            ${visibleTopics.map(t => {
+              const isChecked = !!userProgress[t.id];
+              const badgeClass = t.difficulty === 'easy' ? 'badge-easy' : t.difficulty === 'medium' ? 'badge-medium' : 'badge-hard';
+              return `
+                <div class="topic-row p-4 flex items-center justify-between gap-4 hover:bg-[var(--background,#0f172a)]/30 transition text-xs md:text-sm">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <input 
+                      type="checkbox" 
+                      data-topic-id="${t.id}" 
+                      ${isChecked ? 'checked' : ''} 
+                      class="topic-check w-4 h-4 rounded text-red-600 focus:ring-red-500 accent-red-600 cursor-pointer"
+                    />
+                    <div class="truncate">
+                      <div class="flex items-center gap-2 flex-wrap">
+                        <span class="font-semibold ${isChecked ? 'line-through text-[var(--muted-foreground,#64748b)]' : 'text-[var(--foreground,#f8fafc)]'}">${t.title}</span>
+                        <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md ${badgeClass}">${t.difficulty}</span>
+                      </div>
+                      <div class="flex items-center gap-1.5 mt-1">
+                        ${t.tags.map(tag => `<span class="text-[10px] text-[var(--muted-foreground,#94a3b8)] bg-[var(--background,#0f172a)] px-1.5 py-0.5 rounded border border-[var(--border,#334155)]">${tag}</span>`).join('')}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <button 
+                      data-view-id="${t.id}" 
+                      class="view-problem-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-red-600/10 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white transition"
+                    >
+                      Study & Solve ➜
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+
+        // Toggle module open/close
+        const header = modCard.querySelector('.module-header');
+        const body = modCard.querySelector('.module-body');
+        const arrow = modCard.querySelector('.module-arrow');
+
+        if (allExpanded) {
+          arrow.style.transform = 'rotate(90deg)';
+        }
+
+        header.addEventListener('click', (e) => {
+          if (e.target.closest('input')) return;
+          const isClosed = body.classList.contains('hidden');
+          if (isClosed) {
+            body.classList.remove('hidden');
+            arrow.style.transform = 'rotate(90deg)';
+          } else {
+            body.classList.add('hidden');
+            arrow.style.transform = 'rotate(0deg)';
+          }
+        });
+
+        container.appendChild(modCard);
+      });
+
+      // Attach checkbox listeners
+      document.querySelectorAll('.topic-check').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const id = e.target.getAttribute('data-topic-id');
+          if (e.target.checked) {
+            userProgress[id] = true;
+          } else {
+            delete userProgress[id];
+          }
+          saveProgress();
+          render();
+        });
+      });
+
+      // Attach view problem listeners
+      document.querySelectorAll('.view-problem-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-view-id');
+          openModal(id);
+        });
+      });
+    }
+
+    // Modal Handling
+    let activeTopicId = null;
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDiff = document.getElementById('modal-difficulty');
+    const modalTheory = document.getElementById('modal-theory');
+    const modalCode = document.getElementById('modal-code');
+    const modalChallenge = document.getElementById('modal-challenge');
+    const modalSolution = document.getElementById('modal-solution');
+    const modalInterview = document.getElementById('modal-interview');
+    const modalCheckbox = document.getElementById('modal-checkbox');
+    const solutionContainer = document.getElementById('solution-container');
+    const toggleSolutionBtn = document.getElementById('toggle-solution-btn');
+
+    function findTopic(id) {
+      for (const m of modulesData) {
+        for (const t of m.topics) {
+          if (t.id === id) return t;
+        }
+      }
+      return null;
+    }
+
+    function openModal(id) {
+      activeTopicId = id;
+      const topic = findTopic(id);
+      if (!topic) return;
+
+      modalTitle.textContent = topic.title;
+      modalDiff.textContent = topic.difficulty.toUpperCase();
+      modalDiff.className = `text-xs px-2.5 py-0.5 rounded-full font-bold ${
+        topic.difficulty === 'easy' ? 'badge-easy' : topic.difficulty === 'medium' ? 'badge-medium' : 'badge-hard'
+      }`;
+
+      modalTheory.innerHTML = topic.theory;
+      modalCode.textContent = topic.code;
+      modalChallenge.innerHTML = topic.challenge;
+      modalSolution.textContent = topic.solution;
+      modalInterview.innerHTML = topic.interview;
+
+      modalCheckbox.checked = !!userProgress[id];
+      solutionContainer.classList.add('hidden');
+      toggleSolutionBtn.textContent = 'Show Solution Code';
+
+      modal.classList.remove('hidden');
+    }
+
+    document.getElementById('modal-close-btn').addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+
+    document.getElementById('modal-done-btn').addEventListener('click', () => {
+      if (activeTopicId) {
+        if (modalCheckbox.checked) {
+          userProgress[activeTopicId] = true;
+        } else {
+          delete userProgress[activeTopicId];
+        }
+        saveProgress();
+        render();
+      }
+      modal.classList.add('hidden');
+    });
+
+    modalCheckbox.addEventListener('change', () => {
+      if (activeTopicId) {
+        if (modalCheckbox.checked) {
+          userProgress[activeTopicId] = true;
+        } else {
+          delete userProgress[activeTopicId];
+        }
+        saveProgress();
+        render();
+      }
+    });
+
+    toggleSolutionBtn.addEventListener('click', () => {
+      const isHidden = solutionContainer.classList.contains('hidden');
+      if (isHidden) {
+        solutionContainer.classList.remove('hidden');
+        toggleSolutionBtn.textContent = 'Hide Solution Code';
+      } else {
+        solutionContainer.classList.add('hidden');
+        toggleSolutionBtn.textContent = 'Show Solution Code';
+      }
+    });
+
+    // Reset Progress
+    document.getElementById('reset-progress-btn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to reset all your progress?')) {
+        userProgress = {};
+        saveProgress();
+        render();
+      }
+    });
+
+    // Expand / Collapse All
+    document.getElementById('toggle-all-btn').addEventListener('click', () => {
+      allExpanded = !allExpanded;
+      document.getElementById('toggle-all-btn').textContent = allExpanded ? 'Collapse All' : 'Expand All';
+      render();
+    });
+
+    // Filter Buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.classList.remove('bg-red-600', 'text-white');
+          b.classList.add('bg-[var(--background,#0f172a)]', 'text-[var(--muted-foreground,#94a3b8)]');
+        });
+        btn.classList.add('bg-red-600', 'text-white');
+        btn.classList.remove('bg-[var(--background,#0f172a)]', 'text-[var(--muted-foreground,#94a3b8)]');
+        currentFilter = btn.getAttribute('data-filter');
+        render();
+      });
+    });
+
+    document.querySelectorAll('.status-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.status-btn').forEach(b => {
+          b.classList.remove('text-[var(--foreground,#f8fafc)]', 'border-[var(--border,#475569)]');
+          b.classList.add('text-[var(--muted-foreground,#94a3b8)]');
+        });
+        btn.classList.add('text-[var(--foreground,#f8fafc)]', 'border-[var(--border,#475569)]');
+        btn.classList.remove('text-[var(--muted-foreground,#94a3b8)]');
+        currentStatus = btn.getAttribute('data-status');
+        render();
+      });
+    });
+
+    // Search Input
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      currentSearch = e.target.value.toLowerCase().trim();
+      render();
+    });
+
+    // Initial render
+    updateStats();
+    render();
+  </script>
+</body>
+</html>
